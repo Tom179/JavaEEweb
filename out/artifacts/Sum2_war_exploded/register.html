@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>register</title>
+</head>
+<body>
+ <form action="register" method="post">
+      <table >
+      <tr><td colspan="2"><span  id="ErrorMessage" ></span></td></tr>
+      <tr><td>账号</td><td><input type="text" placeholder="请输入用户名" name="username" id="usernameID" th:value="${username}"></td></tr><!-- placeholder为输入框提示 -->
+      <tr><td>密码</td><td><input type="password" name="password" id="passwordID" th:value="${password}"></td></tr>
+      <tr><td>确认密码</td><td><input type="password" name="recommit" id="recommitID" th:value="${recommit}"></td></tr>
+      <tr><td colspan="2"><span class="ermsg" th:text="${ErrorMessage}">请输入新的账号和密码</span></td></tr> 
+      <tr><td colspan="2"><input type="submit" value="注册" id="submit" ></td></tr>
+
+      </table>
+    </form>
+    <button onclick="window.location.href='Login'">返回</button>
+</body>
+
+
+ 
+ 
+ 
+ 
+ <script type="text/javascript" src="jQuery.js"></script><!-- script必须写在css上面 -->
+   <script type="text/javascript">
+   $(function(){//页面加载完成事件【【【
+	   $("#ErrorMessage").text("请输入注册信息");
+	       
+		   $("#usernameID").blur(function(){//jQuery失去焦点写法:【用户名】
+		   //alert("点击了按钮");
+		   //获取输入框内容
+		   var usernameText=$("#usernameID").val();
+		   //创建正则表达式对象
+		   var usernamePatt=/^\w{5,12}$/;    //  /^框架$/  其中\w为字母数字下划线，{5,12}为长度
+		   
+		   //test方法进行验证
+		   if(!usernamePatt.test(usernameText))//不匹配正则表达式，说明格式错误
+		   {  //alert("用户名格式错误");
+		       
+		       //设置span标签的错误提示
+			   $("#ErrorMessage").text("用户名不合法");
+			 /////// var temp=$("#ErrorMessage").text();//记录这次的错误信息
+		       //错误后需要重新输入，组织刷新跳转
+		      return false;
+		   }
+		   
+		       $("#ErrorMessage").text("");//还原上一次错误信息
+		        /////////recordError=temp;//这次的错误信息赋值给下一个的“上一个”
+		       
+		   });
+	   
+   
+		   $("#passwordID").blur(function(){//jQuery失去焦点写法【密码】
+			   var passwordText=$("#passwordID").val();
+			   var passwordPatt=/^\w{5,12}$/;    //  /^框架$/  其中\w为字母数字下划线，{5,12}为长度
+			   
+			   if(!passwordPatt.test(passwordText))//不匹配正则表达式，说明格式错误
+			   {  
+			       
+				   $("#ErrorMessage").text("密码格式错误");
+				  
+			       //错误后需要重新输入，组织刷新跳转
+			      return false;
+			       
+			   }
+			   
+			       $("#ErrorMessage").text("");
+			   
+			   });
+		   
+		   
+		   $("#recommitID").blur(function(){//jQuery失去焦点写法【确认密码】
+			 
+			   
+			   if($("#recommitID").val()!=$("#passwordID").val())//直接与上一次密码比较
+			   {  
+			       
+				   $("#ErrorMessage").text("两次密码输入不同");
+				  
+			       //错误后需要重新输入，组织刷新跳转
+			      return false;
+			       
+			   }
+			   
+			       $("#ErrorMessage").text("");
+			   
+			   });
+		   
+		   
+		   
+		  
+		      
+		   $("#submit").click(function(){
+			  // alert("点击了提交按钮");
+			  var errormessage=$("#ErrorMessage").text();
+			   
+			   if(errormessage!=""){
+				  alert(errormessage);
+				  return false;
+			   }
+			   
+			   
+		   });
+		   
+		   
+		   
+	   
+   });//】】】】】
+   </script>
+
+  <style type="text/css">
+    #submit{
+     width: 220px;
+    }
+    table{
+    background-color: #ADD8E6;
+    }
+    #ErrorMessage{
+    color: red;
+    }
+    table{
+    margin: 1%;
+    border-radius: 7px 7px;
+     }body{
+     background-color: #F0FFFF;
+     }.ermsg{
+     color: red;
+     background-color: #F8F8FF;
+     }
+
+   </style>
+
+
+
+</html>

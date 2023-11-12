@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+</head>
+<body>
+    <form action="Login" method="post">
+      <table>
+      <tr><td colspan="2"><div align="center" id="title">登录页面</div></td></tr>
+      <tr><td align="center">账号</td><td><input type="text"  name="username" th:value="${username}"></td></tr>
+      <tr><td align="center">密码</td><td><input type="password"  name="password" th:value="${password}"></td></tr>
+      <tr><td colspan="2"><span class="ermsg" th:text="${ErrorMessage}">请输入用户名和密码</span></td></tr>
+          <tr> Remember me: <input type="checkbox" name="rememberMe" value="true"><br></tr>
+          <tr><td colspan="2"><input type="submit" value="登录" id="submit"></td></tr>
+      </table> 
+    </form>
+  没有账号？<button onclick="window.location.href='register.html'">注册</button>
+</body>
+
+
+
+   <style type="text/css">
+    #submit{
+     width: 250px;
+     Height: 30px;
+    }
+    table{
+    background-color: #ADD8E6;
+    border-radius: 7px 7px;
+    margin: 1%;
+    height: 150px;
+    }
+    #regist{
+    width: 100px;
+    }
+    #title{
+    background-color: #6495ED;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    }
+     body{
+     background-color: #F0FFFF;
+     }
+     .ermsg{
+     color: red;
+     background-color: #F8F8FF;
+     }
+   </style>
+
+
+</html>

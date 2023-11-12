@@ -1,0 +1,171 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>图书管理页面</title>
+</head>
+<body>
+
+<div id="container">
+
+
+  <form action="bookServlet" method="Post" id="addBook">
+    <table align="center">
+      <tr>
+        <th>书名</th>
+        <th>作者</th>
+        <th>书号</th>
+        <th>库存</th>
+      </tr>
+
+      <tr>
+        <td>添加图书:<input type="text" name="bookname" id="bookname"></td>
+        <td><input type="text" name="author" id="author"></td>
+        <td><input type="text" name="ID" id="ID"></td>
+        <td><input type="text" name="remain" id="remain"></td>
+        <td><input type="submit" value="确认添加" id="submit"></td>
+      </tr>
+    </table>
+  </form>
+
+
+
+
+
+
+
+
+
+
+  <div class="show" >
+    <h2>图书列表</h2>
+    <table border="1" id="图书表" class="show" cellspacing="0" >
+      <tr id="title">
+        <th>书名</th>
+        <th>作者</th>
+        <th>书号</th>
+        <th>库存</th>
+        <th>操作</th>
+      </tr>
+
+      <!-- 需要循环查询渲染数据库 -->
+      <tr th:if="${#lists.isEmpty(session.bookList)}">
+        <td colspan="4">库存为空</td>
+      </tr>
+      <tr th:unless="${#lists.isEmpty(session.bookList)}" th:each="oneBook: ${session.bookList}">
+        <td th:text="${oneBook.bookName}"></td>
+        <td th:text="${oneBook.author}"></td>
+        <td th:text="${oneBook.ID}"></td>
+        <td th:text="${oneBook.remain}"></td>
+        <!--  <td><button  th:data-pid="${oneBook.ID}" th:onclick="delBook(this.setAttribute('data-pid'))">删除</button></td>-->
+        <td><button  th:onclick="delBook([[${oneBook.ID}]])">删除</button></td><!--对咯！-->
+        <!-- 注意动态取出id值的写法!!!!!????!!!!! -->
+      </tr>
+    </table>
+    <div><!-- 分页栏 -->
+      <input type="button" value="首页" class="btn" th:onclick="window.location.href='bookServlet?pageNo='+1"  th:disabled="${session.pageNo<2||session.pageNo==null}"/>
+      <input type="button" value="上一页" class="btn" th:onclick="window.location.href='bookServlet?pageNo='+[[${session.pageNo-1}]] " th:disabled="${session.pageNo<2}"/>
+      <input type="button" value="下一页" class="btn" th:onclick="window.location.href='bookServlet?pageNo='+[[${session.pageNo+1}]]" th:disabled="${session.pageNo==session.countPage}"/>
+      <input type="button" value="尾页" class="btn" th:onclick="window.location.href='bookServlet?pageNo='+[[${session.countPage}]]" th:disabled="${session.pageNo==session.countPage}"/>
+    </div>
+    <button id="exit" onclick="window.location.href='首页.html'">返回</button>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <div id="search" class="show" style="float: right;">
+    <form action="search" method="Post">
+      <input type="text" name="aim" placeholder="请输入关键字" th:value="${session.SearchAim}"/><input type="submit" value="查找🔍">
+    </form>
+    <table  cellspacing="5px" id="searchID">
+      <tr th:if="${#lists.isEmpty(session.AimBook)}">
+        <td colspan="4" th:text="${session.isSearched}"></td>
+      </tr>
+      <tr th:unless="${#lists.isEmpty(session.bookList)}" th:each="oneBook: ${session.AimBook}">
+        <td th:text="${oneBook.bookName}"></td>
+        <td th:text="${oneBook.author}"></td>
+        <td th:text="${oneBook.ID}"></td>
+        <td th:text="${oneBook.remain}"></td>
+        <td><button  th:onclick="delBook([[${oneBook.ID}]])">删除</button></td><!--对咯！-->
+        <!-- 注意动态取出id值的写法!!!!!????!!!!! -->
+      </tr>
+    </table>
+    <button onclick="window.location.href='search'" style="float:right">x</button>
+  </div>
+
+
+
+</div>
+</body>
+
+
+
+
+
+
+
+<style type="text/css">
+
+  #container{
+    margin: 0 15%;
+    background-color: #E6E6FA;
+  }
+
+  #title{
+    color:white;
+    background-color: #6495ED;
+  }
+
+  body{
+    background-image:url('壁纸.jpg');
+  }
+  #exit{
+    height: 50px;
+    width: 150px;
+    color:white;
+    background-color: #6495ED;
+  }
+  #search{
+    border-color:#6495ED;
+    margin:0px 10%;
+  }
+  .show{
+    display: inline-block;
+  }
+  #search{
+    margin: 5% 40% 0 0;
+    background-color: #F8F8FF;
+  }
+
+
+</style>
+
+
+
+<script type="text/javascript" src="jQuery.js"></script>
+<script type="text/javascript">//验证表单全部输入完整
+$("#submit").click(function(){
+  if($("#bookname").val()==""||$("#author").val()==""||$("#ID").val()==""||$("#remain").val()==""){
+    alert("信息未输入完整");
+    return false;
+  }
+});
+
+function delBook(ID){
+
+  if(confirm('是否确认删除？'))
+    window.location.href='del.do?ID='+ID;
+}
+
+
+</script>
+
+</html>
